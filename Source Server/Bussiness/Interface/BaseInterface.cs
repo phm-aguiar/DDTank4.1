@@ -4,7 +4,6 @@
 // MVID: C2537CFF-7BDB-4A06-BE9C-A8074B2C97E3
 // Assembly location: C:\Users\Pham Van Hungg\Desktop\Decompiler\Road\Bussiness.dll
 
-using Bussiness.CenterService;
 using log4net;
 using SqlDataProvider.Data;
 using System;
@@ -13,7 +12,7 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Web.Security;
+using System.Security.Cryptography; // <--- ADICIONE ESTA
 
 namespace Bussiness.Interface
 {
@@ -87,10 +86,23 @@ namespace Bussiness.Interface
       return (int) (time - localTime).TotalSeconds;
     }
 
-    public static string md5(string str)
-    {
-      return FormsAuthentication.HashPasswordForStoringInConfigFile(str, nameof (md5)).ToLower();
-    }
+	public static string md5(string str)
+	{
+	    using (MD5 md5 = MD5.Create())
+	    {
+	        // Converte a string de entrada para um array de bytes e calcula o hash
+	        byte[] inputBytes = Encoding.UTF8.GetBytes(str);
+	        byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+	        // Converte o array de bytes do hash para uma string hexadecimal
+	        StringBuilder sb = new StringBuilder();
+	        for (int i = 0; i < hashBytes.Length; i++)
+	        {
+	            sb.Append(hashBytes[i].ToString("x2"));
+	        }
+	        return sb.ToString().ToLower();
+	    }
+	}
 
     public static string RequestContent(string Url)
     {
