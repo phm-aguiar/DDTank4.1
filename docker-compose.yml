@@ -1,0 +1,20 @@
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: ddtank_db
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Pedro100-123"
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./Db/data:/var/opt/mssql/data:Z
+      - ./Db:/var/opt/mssql/backups:Z
+    deploy: # <- Adicione esta seção
+      resources:
+        limits:
+          cpus: '1.0'   # Limita a no máximo 1 core de CPU
+          memory: 2G    # Limita a no máximo 2GB de RAM
+        reservations:
+          cpus: '0.50'  # Garante pelo menos meio core de CPU
+          memory: 1G    # Garante pelo menos 1GB de RAM

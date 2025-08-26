@@ -1,6 +1,6 @@
 const axios = require("axios");
 const md5 = require("md5");
-const host = "http://s1.plusgames.com.br/pt/ddtank/s01";
+const host = "http://localhost:8080";
 
 function getSession(username, md5Pass)
 {
